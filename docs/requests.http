@@ -1,12 +1,26 @@
 GET http://localhost:3000/coffees?limit=10&offset=0
 ###
-GET http://localhost:3000/coffees/12
+GET http://localhost:3000/coffees/2
 ###
 POST http://localhost:3000/coffees
 Content-Type: application/json
 
 {
-  "name": "Cappuccino",
-  "roast": "medium",
-  "origin": "Italy"
+    "name": "Cappuccino",
+    "brand": "Starbucks",
+    "flavors": [
+        "Caramel",
+        "Vanilla"
+    ]
+}
+
+###
+DELETE http://localhost:3000/coffees/2
+
+###
+PUT http://localhost:3000/coffees/3
+Content-Type: application/json
+
+{
+    "name": "Cappuccino2"
 }

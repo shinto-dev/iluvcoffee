@@ -65,7 +65,7 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-To Create controller
+### To Create controller
 
 ```bash
 $ nest g controller
@@ -81,3 +81,13 @@ Also, we can create controllers under specific directories.
 $ nest generate controller module/abc
 ```
 will be placed under `src/module/abc/`
+
+### To Create service
+
+```bash
+$ nest g service
+```
+OR (short form)
+```bash
+$ nest g s
+```
