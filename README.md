@@ -96,3 +96,12 @@ $ nest g s
 ```bash
 $ nest g module
 ```
+
+### To create a class
+```bash
+$ nest g class <path> 
+```
+if you want to avoid generating test file, use
+```bash
+$ nest g class <path> --no-spec
+```
