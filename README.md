@@ -91,3 +91,8 @@ OR (short form)
 ```bash
 $ nest g s
 ```
+
+### To create a module
+```bash
+$ nest g module
+```
