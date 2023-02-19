@@ -7,7 +7,11 @@ async function bootstrap() {
   /* The ValidationPipe provides a convenient way of enforcing validation rules
      for all incoming client payloads.
      You can specify these rules by using simple annotations in your DTO! */
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // Strip out any properties that are not defined in the DTO.
+    }),
+  );
   await app.listen(3000);
 }
 bootstrap();
