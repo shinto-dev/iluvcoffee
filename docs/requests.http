@@ -1,0 +1,12 @@
+GET http://localhost:3000/coffees
+###
+GET http://localhost:3000/coffees/12
+###
+POST http://localhost:3000/coffees
+Content-Type: application/json
+
+{
+  "name": "Cappuccino",
+  "roast": "medium",
+  "origin": "Italy"
+}

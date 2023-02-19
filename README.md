@@ -80,4 +80,4 @@ Also, we can create controllers under specific directories.
 ```bash
 $ nest generate controller module/abc
 ```
-will be placed under `src/module/abc/abc.controller.ts`
+will be placed under `src/module/abc/`
