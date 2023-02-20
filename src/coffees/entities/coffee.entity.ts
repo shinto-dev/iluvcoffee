@@ -17,6 +17,9 @@ export class Coffee {
   brand: string;
   @Column({ default: 0 })
   recommendations: number;
+  @Column({ nullable: true })
+  description: string;
+
   @JoinTable()
   @ManyToMany((type) => Flavor, (flavor) => flavor.coffees, {
     cascade: true, // when we save a coffee, we want to save the flavors as well
