@@ -107,3 +107,162 @@ $ npx typeorm migration:revert -d dist/typeorm-cli.config
 ```bash
 $ npx typeorm migration:generate src/migrations/SchemaSync -d dist/typeorm-cli.config
 ```
+
+## Custom providers
+
+### Value provider
+```typescript
+export class MockCoffeesService { }
+
+@Module({
+  providers: [
+    {
+      provide: CoffeesService,
+      useValue: new MockCoffeesService(), // <-- mock implementation
+    }
+  ]
+})
+export class CoffeesModule {}
+```
+### Non-class-based providers
+```typescript
+{
+  provide: 'COFFEE_BRANDS', // 👈
+  useValue: ['buddy brew', 'nescafe'] // array of coffee brands,
+}
+```
+inject this to the service now
+```typescript
+@Injectable()
+export class CoffeesService {
+  constructor(
+    @Inject('COFFEE_BRANDS') coffeeBrands: string[],
+  ) {
+    console.log(coffeeBrands);
+  }
+}
+```
+### Class provider
+```typescript
+@Module({
+  providers: [
+    {
+      provide: CoffeesService,
+      useClass: CoffeesService, // <-- regular class
+    }
+  ]
+})
+```
+### Factory provider
+We can replace the provider with value by using factory provider.
+```typescript
+@Module({
+  providers: [
+    {
+      provide: 'COFFEE_BRANDS',
+        useFactory: () => ['buddy brew', 'nescafe'],
+    }
+  ]
+})
+```
+the factory provider is powerful because we can inject dependencies into the factory function.
+```typescript
+@Injectable()
+export class BrandsFactory {
+  create() {
+    return ['buddy brew', 'nescafe'];
+  }
+}
+@Module({
+  providers: [
+    {
+      provide: 'COFFEE_BRANDS',
+      useFactory: (brandsFactory: BrandsFactory) => brandsFactory.create(),
+      inject: [BrandsFactory],
+    }
+  ]
+})
+```
+Async providers
+```typescript
+{
+  provide: 'COFFEE_BRANDS',
+  // Note "async" here, and Promise/Async event inside the Factory function 
+  // Could be a database connection / API call / etc
+  // In our case we're just "mocking" this type of event with a Promise
+  useFactory: async (connection: Connection): Promise<string[]> => {
+    // const coffeeBrands = await connection.query('SELECT * ...');
+    const coffeeBrands = await Promise.resolve(['buddy brew', 'nescafe'])
+    return coffeeBrands;
+  },
+  inject: [Connection],
+},
+```
+
+## Dynamic modules
+```typescript
+// Improved Dynamic Module way of creating CONNECTION provider
+export class DatabaseModule {
+  static register(options: DataSourceOptions): DynamicModule {
+    return {
+      module: DatabaseModule,
+      providers: [
+        {
+          provide: 'CONNECTION',
+          useValue: new DataSource(options), 
+        }
+      ]
+    }
+  }
+}
+```
+utilize the dynamic module in another module
+```typescript
+// Utilizing the dynamic DatabaseModule in another Modules imports: []
+imports: [
+  DatabaseModule.register({ // 👈 passing in dynamic values
+    type: 'postgres',
+    host: 'localhost',
+    username: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+  })
+]
+```
+## Provider scopes
+
+### Singleton scope (default scope)
+This is assumed when NO Scope is entered.
+```typescript
+@Injectable({ scope: Scope.DEFAULT })
+export class CoffeesService {}
+```
+or
+```typescript
+@Injectable()
+export class CoffeesService {}
+```
+
+### Transient scope
+This means the provider will be instantiated every time it is injected.
+```typescript
+@Injectable({ scope: Scope.TRANSIENT })
+export class CoffeesService {}
+```
+
+Scope TRANSIENT with a Custom Provider
+```typescript
+{
+    provide: 'COFFEE_BRANDS',
+    useFactory: () => ['buddy brew', 'nescafe'],
+    scope: Scope.TRANSIENT // 👈
+}
+````
+
+### Request scope
+Request scope provides a new instance of the provider for each incoming request.
+```typescript
+@Injectable({ scope: Scope.REQUEST })
+export class CoffeesService {}
+```
+
+
