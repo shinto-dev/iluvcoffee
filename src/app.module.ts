@@ -5,6 +5,7 @@ import { CoffeesModule } from './coffees/coffees.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import * as process from 'process';
+import * as Joi from '@hapi/joi';
 
 @Module({
   imports: [
@@ -12,6 +13,10 @@ import * as process from 'process';
     ConfigModule.forRoot({
       envFilePath: '.env', // this is the default path
       ignoreEnvFile: process.env.NODE_ENV === 'production', // ignore the .env file in production
+      validationSchema: Joi.object({
+        DATABASE_HOST: Joi.required(),
+        DATABASE_PORT: Joi.number().default(5432),
+      }),
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
