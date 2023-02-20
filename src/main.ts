@@ -12,6 +12,9 @@ async function bootstrap() {
       whitelist: true, // Strip out any properties that are not defined in the DTO.
       forbidNonWhitelisted: true, // Throw an error if a client sends a property that is not defined in the DTO.
       transform: true, // Transform incoming payloads to the correct type.
+      transformOptions: {
+        enableImplicitConversion: true, // Allow implicit type conversion.
+      },
     }),
   );
   await app.listen(3000);
