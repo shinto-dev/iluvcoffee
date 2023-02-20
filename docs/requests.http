@@ -18,9 +18,9 @@ Content-Type: application/json
 DELETE http://localhost:3000/coffees/2
 
 ###
-PUT http://localhost:3000/coffees/3
+PATCH http://localhost:3000/coffees/1
 Content-Type: application/json
 
 {
-    "name": "Cappuccino2"
+    "name": "Coffee#1"
 }
