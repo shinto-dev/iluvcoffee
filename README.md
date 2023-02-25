@@ -265,4 +265,60 @@ Request scope provides a new instance of the provider for each incoming request.
 export class CoffeesService {}
 ```
 
+## Other building blocks
+* Exception filters
+* Pipes
+* Guards
+* Interceptors
+
+Nest building blocks can be:
+ - Globally-scoped,
+ - Controller-scoped,
+ - Method-scoped,
+ - And (the bonus 4th one) Param-scoped which as we said, is available to Pipes only.
+
+When you have blocks that are scoped to a controller, method, or param, they will be executed in the following order:
+1. Global
+2. Controller
+3. Method
+4. Param
+
+if you define validation pipe globally, you cannot inject any dependencies into the pipe. Other way is to add the pipe in the module level. Once instantiated, the pipe will be available in the global scope.
+```typescript
+providers: [
+  {
+    provide: APP_PIPE,
+    useClass: ValidationPipe,
+  },
+],
+```
+similarly APP_GUARD, APP_INTERCEPTOR, APP_FILTER
+
+To apply a pipe in controller level, we can use the @UsePipes decorator.
+```typescript
+@UsePipes(ValidationPipe)
+@Post()
+create(@Body() body: CreateCoffeeDto) {
+  return this.coffeesService.create(body);
+}
+```
+### Exception filters
+Exception filters are used to catch exceptions and handle them in a custom way. They are similar to middleware in that they are executed before the response is sent to the client. However, they are only executed when an exception is thrown.
+
+To create a filter, use the following command:
+```bash
+$ nest g filter common/filters/http-exception
+```
+here common/filters/http-exception is the path where the filter will be created.
+
+### Guards
+Guards are used to determine whether a request should be handled by a route handler or not. They are executed before the route handler is executed. If the guard returns true, the route handler is executed. If the guard returns false, the route handler is not executed.
+
+To create a guard, use the following command:
+```bash
+$ nest g guard common/guards/api-key
+``` 
+
+
+
 

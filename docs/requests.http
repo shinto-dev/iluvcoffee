@@ -1,26 +1,29 @@
-GET http://localhost:3000/coffees?limit=10&offset=0
+GET http://localhost:3000/coffees?limit=2&offset=2
 ###
-GET http://localhost:3000/coffees/2
+GET http://localhost:3000/coffees/13
 ###
 POST http://localhost:3000/coffees
 Content-Type: application/json
 
 {
-    "name": "Cappuccino",
-    "brand": "Starbucks",
-    "flavors": [
-        "Caramel",
-        "Vanilla"
-    ]
+  "name": "Coffee#6",
+  "brand": "Starbucks",
+  "flavors": [
+    "Caramel",
+    "Vanilla"
+  ]
 }
 
 ###
 DELETE http://localhost:3000/coffees/2
 
 ###
-PATCH http://localhost:3000/coffees/1
+PATCH http://localhost:3000/coffees/133
 Content-Type: application/json
 
 {
-    "name": "Coffee#1"
+  "flavors": [
+    "Caramel",
+    "Cardamom"
+    ]
 }
