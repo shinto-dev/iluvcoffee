@@ -20,15 +20,17 @@ import appConfig from './config/app.config';
       }),
       load: [appConfig],
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DATABASE_HOST,
-      port: +process.env.DATABASE_PORT,
-      username: process.env.DATABASE_USER,
-      password: process.env.DATABASE_PASSWORD,
-      database: process.env.DATABASE_NAME,
-      autoLoadEntities: true, // Automatically load entities from the entities folder.
-      synchronize: true, // Don't use this in production! This will drop and re-create your database every time the app is restarted.
+    TypeOrmModule.forRootAsync({
+      useFactory: () => ({
+        type: 'postgres',
+        host: process.env.DATABASE_HOST,
+        port: +process.env.DATABASE_PORT,
+        username: process.env.DATABASE_USER,
+        password: process.env.DATABASE_PASSWORD,
+        database: process.env.DATABASE_NAME,
+        autoLoadEntities: true, // Automatically load entities from the entities folder.
+        synchronize: true, // Don't use this in production! This will drop and re-create your database every time the app is restarted.
+      }),
     }),
   ],
   controllers: [AppController],
