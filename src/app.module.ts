@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { CoffeesModule } from './coffees/coffees.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { CommonModule } from './common/common.module';
 import * as process from 'process';
 import * as Joi from '@hapi/joi';
 import appConfig from './config/app.config';
@@ -32,6 +33,7 @@ import appConfig from './config/app.config';
         synchronize: true, // Don't use this in production! This will drop and re-create your database every time the app is restarted.
       }),
     }),
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService],
