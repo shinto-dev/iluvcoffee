@@ -2,10 +2,14 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '../../metadata/public.metadata';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ApiKeyGuard implements CanActivate {
-  constructor(private readonly reflector: Reflector) {}
+  constructor(
+    private readonly reflector: Reflector,
+    private readonly configService: ConfigService,
+  ) {}
 
   canActivate(
     context: ExecutionContext,
@@ -18,6 +22,6 @@ export class ApiKeyGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
     const apiKey = request.headers['x-api-key'];
-    return apiKey === process.env.API_KEY;
+    return apiKey === this.configService.get('API_KEY');
   }
 }
