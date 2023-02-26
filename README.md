@@ -319,6 +319,19 @@ To create a guard, use the following command:
 $ nest g guard common/guards/api-key
 ``` 
 
+### Interceptors
+Interceptors have a set of useful capabilities which are inspired by the Aspect Oriented Programming (AOP) technique. They make it possible to:
+- bind extra logic before or after method execution
+- transform the result returned from a method
+- transform the exception thrown from a method
+- extend basic method behavior
+- or even completely overriding a method - depending on a specific condition (for example: doing something like caching various responses)
+
+To create an interceptor, use the following command:
+```bash
+$ nest g interceptor common/interceptors/logging
+```
+
 
 
 
