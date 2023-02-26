@@ -13,6 +13,7 @@ import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { PaginationQueryDto } from '../common/pagination-query.dto';
 import { Public } from '../common/metadata/public.metadata';
+import { ParseIntPipe } from '../common/pipes/parse-int/parse-int.pipe';
 
 @Controller('coffees')
 export class CoffeesController {
@@ -26,8 +27,9 @@ export class CoffeesController {
 
   @Get(':id')
   @Public()
-  async findOne(@Param('id') id: number) {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    // ParseIntPipe is a custom pipe, but similar one is already provided by NestJS.
+    // Without this, we return 500 error if the param is not integer.
     return this.coffeesService.findOne(id);
   }
 

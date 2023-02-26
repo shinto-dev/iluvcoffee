@@ -1,6 +1,6 @@
 GET http://localhost:3000/coffees?limit=2&offset=2
 ###
-GET http://localhost:3000/coffees/13
+GET http://localhost:3000/coffees/1a3
 ###
 POST http://localhost:3000/coffees
 Content-Type: application/json
