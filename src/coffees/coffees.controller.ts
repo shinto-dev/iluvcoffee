@@ -25,7 +25,9 @@ export class CoffeesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
+  @Public()
+  async findOne(@Param('id') id: number) {
+    await new Promise((resolve) => setTimeout(resolve, 5000));
     return this.coffeesService.findOne(id);
   }
 
